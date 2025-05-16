@@ -1,5 +1,4 @@
-import dev.bagel.adopt.ArgParser;
-import dev.bagel.adopt.Main;
+import dev.bagel.adopt.util.ArgParser;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 
@@ -9,20 +8,20 @@ public class TestArgs {
 
     @Test
     public void testArgs() {
-        String[] args = new String[]{ "-ip", "localhost:3000", "-test", "-arg3", "12345" };
+        String[] args = new String[]{ "-c", "gray", "-test", "-arg3", "12345" };
         ArgParser parser = new ArgParser(args);
 
-        assertTrue(parser.has("ip"));
-        assertEquals("localhost:3000", parser.get("ip"));
-        assertEquals("localhost:3000", parser.getOrDefault("ip", () -> "invalid"));
+        assertTrue(parser.contains("c"));
+        assertEquals("gray", parser.get("c"));
+        assertEquals("gray", parser.getOrDefault("c", () -> "invalid"));
 
-        assertTrue(parser.has("test"));
+        assertTrue(parser.contains("test"));
 
-        assertTrue(parser.has("arg3"));
+        assertTrue(parser.contains("arg3"));
         assertEquals("12345", parser.get("arg3"));
 
-        assertFalse(parser.has("arg4"));
-        assertEquals("blue", parser.getOrDefault("arg4", () -> "blue"));
+        assertFalse(parser.contains("arg4"));
+        assertEquals("15", parser.getOrDefault("arg4", () -> "15"));
     }
 
     @Test

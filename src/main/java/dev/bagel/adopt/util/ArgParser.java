@@ -1,17 +1,27 @@
-package dev.bagel.adopt;
+package dev.bagel.adopt.util;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Supplier;
 
 public class ArgParser {
-    private final Map<String, String> argMap = new HashMap<>();
+    final Map<String, String> argMap = new HashMap<>();
 
     public ArgParser(String[] args) {
         parseArgs(args);
     }
 
-    public boolean has(String arg) {
+    public boolean containsAny(String... args) {
+        for (String arg : args) {
+            if (argMap.containsKey(arg)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean contains(String arg) {
         return argMap.containsKey(arg);
     }
 
