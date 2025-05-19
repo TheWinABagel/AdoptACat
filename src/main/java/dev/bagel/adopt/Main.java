@@ -21,10 +21,10 @@ public class Main {
     public static final String[] HEADERS = { "Name", "age", "color" };
 
     public static void main(String[] args) {
-        SortParser builder = new SortParser("http://localhost:3000/cats", args); //todo clean up/remove parser, roll into builder
+        SortParser parser = new SortParser("http://localhost:3000/cats", args); //todo clean up/remove parser, roll into builder
         Gson gson = new Gson();
         try {
-            Sorter sorter = builder.build();
+            Sorter sorter = parser.getParser();
             URL url = sorter.getURL();
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream(), StandardCharsets.UTF_8))){
                 //Read json

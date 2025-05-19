@@ -6,7 +6,7 @@ public enum SortType {
     LESS_THAN("_lt=", "<"),
     GREATER_THAN_OR_EQUAL_TO("_gte=", ">="),
     LESS_THAN_OR_EQUAL_TO("_lte=", "<="),
-    CLIENT_FILTER(null, "regex=");
+    CONTAINS(null, "contains=");
 
     public final String getReqStr;
     public final String argStr;

@@ -1,5 +1,14 @@
 package dev.bagel.adopt.arg;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -30,18 +39,17 @@ public class SortParser {
             }
             for (ArgType type : ArgType.values()) {
                 if (type.matches(split[0])) {
-                    thing(SortType.find(split[1]), type, args[i + 1]);
+                    addArg(SortType.find(split[1]), type, args[i + 1]);
                     break;
                 }
             }
             i++;
 
-
         }
         print();
     }
 
-    public boolean thing(SortType type, ArgType argType, String data) {
+    public boolean addArg(SortType type, ArgType argType, String data) {
         if (type == null) {
             System.err.println("Comparison does not exist");
             return false;
@@ -55,10 +63,10 @@ public class SortParser {
     }
 
     public void print() {
-        System.out.println("Builder arguments: " + this.args);
+        System.out.println("Parser arguments: " + this.args);
     }
 
-    public Sorter build() {
+    public Sorter getParser() {
         StringBuilder sb = new StringBuilder(base);
         int requests = 0;
         List<SortArg<?>> extras = new ArrayList<>();

@@ -8,7 +8,7 @@ public class TestArgs {
     @Disabled
     public void testArgs() {
         String[] args = new String[]{ "-c", "gray", "-test", "-arg3", "12345" };
-//        ArgumentParser parser = new ArgumentParser(args);
+        SortParser parser = new SortParser("http://localhost:3000/cats", args);
 
 /*        assertTrue(parser.contains("c"));
         assertEquals("gray", parser.get("c"));
@@ -39,7 +39,7 @@ public class TestArgs {
     @Test
     public void aaaa() {
         String[] args = new String[]{ "-c", "gray", "--age:>=", "5", "-n", "hi"};
-        SortParser parser = new SortParser(args,);
+        SortParser parser = new SortParser("http://localhost:3000/cats", args);
 
     }
 }
