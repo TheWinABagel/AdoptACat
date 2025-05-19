@@ -1,0 +1,25 @@
+{
+  "cats": [
+    { "id": "1", "name": "Charlie", "age": 12, "color": "blue" },
+    { "id": "2", "name": "Frankie", "age": 11, "color": "blue" },
+    { "id": "3", "name": "Tiger", "age": 12, "color": "brown striped" },
+    { "id": "4", "name": "Lennon", "age": 15, "color": "black and white"},
+    { "id": "5", "name": "Gabbie", "age": 15, "color": "black and white"},
+    { "id": "6", "name": "Duchess", "age": 16, "color": "brown striped"},
+    { "id": "7", "name": "Tobi", "age": 15, "color": "brown striped with some white"},
+    { "id": "8", "name": "Troy", "age": 16, "color": "brown striped"},
+    { "id": "9", "name": "Nellie", "age": 11, "color": "mottled tan-brown"},
+    { "id": "10", "name": "Jinx", "age": 14, "color": "silver striped"},
+    { "id": "11", "name": "Lady", "age": 7, "color": "white and calico"},
+    { "id": "12", "name": "Loki", "age": 5, "color": "brown striped"},
+    { "id": "13", "name": "Ninja", "age": 6, "color": "mottled tan-brown"},
+    { "id": "14", "name": "Bean", "age": 3, "color": "black and white"},
+    { "id": "15", "name": "Ellis", "age": 7, "color": "brown striped"},
+    { "id": "16", "name": "Aurora", "age": 3, "color": "blue"},
+    { "id": "17", "name": "Blackpaw", "age": 3, "color": "brown and black"},
+    { "id": "18", "name": "Felix", "age": 10, "color": "black and white"},
+    { "id": "19", "name": "William", "age": 3, "color": "blue"},
+    { "id": "20", "name": "Billiam", "age": 6, "color": "silver striped"},
+    { "id": "21", "name": "Philliam", "age": 9, "color": "brown and black"}
+  ]
+}
