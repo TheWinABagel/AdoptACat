@@ -5,6 +5,7 @@ import dev.bagel.adopt.arg.SortParser;
 public class Main {
 
     public static void main(String[] args) {
+        //todo unhardcode
         SortParser parser = new SortParser("http://localhost:3000/cats", args);
         parser.getParser().saveToFile();
     }
