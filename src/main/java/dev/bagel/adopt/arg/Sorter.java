@@ -1,15 +1,20 @@
 package dev.bagel.adopt.arg;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 
+import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -27,14 +32,31 @@ public class Sorter {
         this.extras = extras;
     }
 
-    public URL getURL() throws MalformedURLException {
+    public void saveToFile() {
+        Gson gson = new Gson();
+        try {
+            URL url = getURL();
+            //Parse received json
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream(), StandardCharsets.UTF_8))){
+                JsonArray array = gson.fromJson(reader, JsonArray.class);
+                printCsv(array.asList());
+            }
+        }
+        catch (IOException e) {
+            System.err.println("Error occurred while attempting to connect to the server.");
+            e.printStackTrace(System.err);
+            System.exit(1);
+        }
+    }
+
+    private URL getURL() throws MalformedURLException {
         if (url == null) {
             url = URI.create(urlStr).toURL();
         }
         return url;
     }
 
-    public void printCsv(List<JsonElement> cats) throws IOException {
+    private void printCsv(List<JsonElement> cats) throws IOException {
         Path path = Paths.get("").toAbsolutePath().resolve("out.csv");
 
         CSVFormat csvFormat = CSVFormat.DEFAULT.builder().setHeader(HEADERS).get();

@@ -45,7 +45,6 @@ public class SortParser {
             i++;
 
         }
-        print();
     }
 
     public boolean addArg(SortType type, ArgName argName, String data) {
@@ -55,10 +54,6 @@ public class SortParser {
         catch (NumberFormatException e) {
             throw new IllegalArgumentException("Failed to parse arg: ", e);
         }
-    }
-
-    public void print() {
-        System.out.println("Parser arguments: " + this.args);
     }
 
     public Sorter getParser() {
