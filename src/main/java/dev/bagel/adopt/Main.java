@@ -4,15 +4,13 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import dev.bagel.adopt.util.ArgumentParser;
-import dev.bagel.adopt.util.Sorter;
+import dev.bagel.adopt.arg.SortParser;
+import dev.bagel.adopt.arg.Sorter;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 
 import java.io.*;
-import java.net.ConnectException;
 import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
@@ -23,10 +21,10 @@ public class Main {
     public static final String[] HEADERS = { "Name", "age", "color" };
 
     public static void main(String[] args) {
-        ArgumentParser parser = new ArgumentParser(args); //todo clean up/remove parser, roll into builder
+        SortParser builder = new SortParser("http://localhost:3000/cats", args); //todo clean up/remove parser, roll into builder
         Gson gson = new Gson();
         try {
-            Sorter sorter = parser.builder.build();
+            Sorter sorter = builder.build();
             URL url = sorter.getURL();
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream(), StandardCharsets.UTF_8))){
                 //Read json

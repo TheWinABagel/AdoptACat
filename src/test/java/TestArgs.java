@@ -1,4 +1,4 @@
-import dev.bagel.adopt.util.ArgumentParser;
+import dev.bagel.adopt.arg.SortParser;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -8,7 +8,7 @@ public class TestArgs {
     @Disabled
     public void testArgs() {
         String[] args = new String[]{ "-c", "gray", "-test", "-arg3", "12345" };
-        ArgumentParser parser = new ArgumentParser(args);
+//        ArgumentParser parser = new ArgumentParser(args);
 
 /*        assertTrue(parser.contains("c"));
         assertEquals("gray", parser.get("c"));
@@ -39,7 +39,7 @@ public class TestArgs {
     @Test
     public void aaaa() {
         String[] args = new String[]{ "-c", "gray", "--age:>=", "5", "-n", "hi"};
-        ArgumentParser parser = new ArgumentParser(args);
+        SortParser parser = new SortParser(args,);
 
     }
 }

@@ -3,17 +3,17 @@ package dev.bagel.adopt.arg;
 import java.util.function.Function;
 
 public enum ArgType {
-    NAME(Function.identity(), "-n", "--name"),
-    COLOR(Function.identity(), "-c", "--color"),
+    NAME(null, "-n", "--name"),
+    COLOR(null, "-c", "--color"),
     AGE(Integer::parseInt, "-a", "--age");
 
     /** Function used to check if arg is valid or not
      * */
-    public final Function<String, ?> parser;
+    public final Function<String, ?> validator;
     private final String[] validArgs;
 
-    ArgType(Function<String, ?> parser, String... validArgs) {
-        this.parser = parser;
+    ArgType(Function<String, ?> validator, String... validArgs) {
+        this.validator = validator;
         this.validArgs = validArgs;
     }
 
@@ -27,5 +27,13 @@ public enum ArgType {
             }
         }
         return false;
+    }
+
+    public String validate(String string) {
+        if (this.validator == null) {
+            return string;
+        }
+        validator.apply(string);
+        return string;
     }
 }

@@ -1,6 +1,4 @@
-package dev.bagel.adopt.util;
-
-import dev.bagel.adopt.arg.Arg;
+package dev.bagel.adopt.arg;
 
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -9,10 +7,10 @@ import java.util.List;
 
 public class Sorter {
     private final String urlStr;
-    private final List<Arg<?>> extras; //todo finish extra parsing on client
+    private final List<SortParser.SortArg<?>> extras; //todo finish extra parsing on client
     private URL url;
 
-    public Sorter(String urlStr, List<Arg<?>> extras) {
+    public Sorter(String urlStr, List<SortParser.SortArg<?>> extras) {
         this.urlStr = urlStr;
         this.extras = extras;
     }
