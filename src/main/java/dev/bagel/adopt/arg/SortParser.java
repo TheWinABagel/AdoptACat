@@ -1,29 +1,25 @@
 package dev.bagel.adopt.arg;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVPrinter;
+import dev.bagel.adopt.Main;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
 public class SortParser {
-    private final String base;
-    private final List<SortArg<?>> args = new ArrayList<>();
+    private final String host;
+    private final List<SortArg> args = new ArrayList<>();
 
-    public SortParser(String base, String[] args) {
-        this.base = base;
+    public SortParser(String host, String[] args) {
+        this.host = host;
         compile(args);
     }
 
     private void compile(String[] args) {
+        if (args.length < 2) {
+            Main.printHelp();
+        }
         for (int i = 0; i < args.length; i++) {
             if (!args[i].startsWith("-")) {
                 throw new IllegalArgumentException("You must specify the sort type.");
@@ -31,14 +27,17 @@ public class SortParser {
             if (!(i + 1 < args.length)) {
                 throw new IllegalArgumentException("You must specify a value to sort against.");
             }
+            if (args[i].equals("-h") || args[i].equals("--help")) {
+                Main.printHelp();
+            }
             String[] split = args[i].split(":", 2);
             //If nothing specified, default to =
             if (split.length < 2) {
                 split = Arrays.copyOf(split, 2);
                 split[1] = "=";
             }
-            for (ArgType type : ArgType.values()) {
-                if (type.matches(split[0])) {
+            for (ArgName type : ArgName.values()) {
+                if (type.getArgtype(split[0])) {
                     addArg(SortType.find(split[1]), type, args[i + 1]);
                     break;
                 }
@@ -49,13 +48,9 @@ public class SortParser {
         print();
     }
 
-    public boolean addArg(SortType type, ArgType argType, String data) {
-        if (type == null) {
-            System.err.println("Comparison does not exist");
-            return false;
-        }
+    public boolean addArg(SortType type, ArgName argName, String data) {
         try {
-            return args.add(new SortArg<>(type, argType, argType.validate(data)));
+            return args.add(new SortArg(type, argName, data));
         }
         catch (NumberFormatException e) {
             throw new IllegalArgumentException("Failed to parse arg: ", e);
@@ -67,14 +62,14 @@ public class SortParser {
     }
 
     public Sorter getParser() {
-        StringBuilder sb = new StringBuilder(base);
+        StringBuilder sb = new StringBuilder(host);
         int requests = 0;
-        List<SortArg<?>> extras = new ArrayList<>();
-        for (SortArg<?> arg : args) {
+        List<SortArg> extras = new ArrayList<>();
+        for (SortArg arg : args) {
             if (arg.type().canUseForGetReq()) {
                 char linkingChar = (requests == 0) ? '?' : '&';
                 sb.append(linkingChar);
-                sb.append(arg.argtype().name().toLowerCase(Locale.ROOT));
+                sb.append(arg.argName().getName());
                 sb.append(arg.type().getReqStr);
                 sb.append(arg.data());
                 requests++;
@@ -83,11 +78,9 @@ public class SortParser {
                 extras.add(arg);
             }
         }
-        System.out.println("Extras not printed: " + extras);
         String str = sb.toString();
-        System.out.println("URL to use: " + str);
         return new Sorter(str, extras);
     }
 
-    public record SortArg<T>(SortType type, ArgType argtype, T data) {}
+    public record SortArg(SortType type, ArgName argName, String data) {}
 }

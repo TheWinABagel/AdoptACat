@@ -13,56 +13,48 @@ import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
 
 public class Main {
-    public static final String[] HEADERS = { "Name", "age", "color" };
 
     public static void main(String[] args) {
-        SortParser parser = new SortParser("http://localhost:3000/cats", args); //todo clean up/remove parser, roll into builder
+        SortParser parser = new SortParser("http://localhost:3000/cats", args);
         Gson gson = new Gson();
         try {
             Sorter sorter = parser.getParser();
             URL url = sorter.getURL();
+            //Parse received json
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream(), StandardCharsets.UTF_8))){
-                //Read json
                 JsonArray array = gson.fromJson(reader, JsonArray.class);
-
-                printCsv(array.asList());
-                for (String line; (line = reader.readLine()) != null;) {
-                    System.out.println(line);
-                }
+                sorter.printCsv(array.asList());
             }
-        } catch (MalformedURLException ignored) {} //Impossible
-        catch (IOException e) {
-            System.err.println("welp");
-            e.printStackTrace(System.err);
         }
-
+        catch (IOException e) {
+            System.err.println("Error occurred while attempting to connect to the server.");
+            e.printStackTrace(System.err);
+            System.exit(1);
+        }
     }
 
     public static void printHelp() {
-        System.out.println("todo help"); //todo help
+        String[] usage = {
+                "Usage: java program [options...]",
+                "Connects to server at 'http://localhost:3000/cats'\n",
+                "Sort types [<st>], will only print to a file if all conditions match",
+                " =          Equals",
+                " >          Greater Than",
+                " <          Less Than",
+                " >=         Greater Than or Equal To",
+                " <=         Less Than or Equal To",
+                " contains=  Check if value contains passed string (ignoring case)\n",
+                "Options",
+                " -c:<st>, --color:<st> <color>          Sort against color of cat",
+                " -a:<st>, --age:<st> <age>              Sort against age of cat",
+                " -n:<st>, --name:<st> <age>             Sort against name of cat"
+        };
+        for (String str : usage) {
+            System.out.println(str);
+        }
         System.exit(0);
     }
 
-    private static void printCsv(List<JsonElement> cats) throws IOException {
-        Path path = Paths.get("").toAbsolutePath().resolve("out.csv");
-        StringWriter sw = new StringWriter();
-
-        CSVFormat csvFormat = CSVFormat.DEFAULT.builder()
-                .setHeader(HEADERS).get();
-        try (FileWriter fw = new FileWriter(path.toFile()); CSVPrinter printer = new CSVPrinter(fw, csvFormat)) {
-            for (JsonElement jsonElement : cats) {
-                if (jsonElement.isJsonObject()) {
-                    JsonObject js = jsonElement.getAsJsonObject();
-                    System.out.println(js.get("color").getAsString());
-                    printer.printRecord(js.get("name").getAsString(), js.get("age").getAsInt(), js.get("color").getAsString());
-                }
-            }
-        }
-
-    }
 }
